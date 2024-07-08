@@ -25,6 +25,15 @@ jobs:
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
         steps:
             - uses: actions/checkout@v4
+            - name: Install Rust toolchain
+              uses: actions-rs/toolchain@v1
+              with:
+                  toolchain: stable
+                  override: true
+            - name: Clone circom
+              run: git clone https://github.com/iden3/circom.git o
+            - name: Install circom
+              run: cd o && cargo install --path circom
             - name: Install
               run: npm install
             - name: Build and poseidon zkey
