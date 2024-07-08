@@ -1,6 +1,4 @@
 import * as snarkjs from 'snarkjs'
-import path from 'path'
-import assert from 'assert'
 import crypto from 'crypto'
 import { poseidonT3 } from '../src/bls12_381/t3.mjs'
 import test, { registerCompletionHandler } from 'ava'
@@ -24,8 +22,8 @@ test('circom impl', async t => {
         }
         const { publicSignals } = await snarkjs.groth16.fullProve(
             { inputs },
-            './out/poseidon_test_js/poseidon_test.wasm',
-            './out/poseidon_test_final.zkey'
+            './out/poseidon_test_bls_js/poseidon_test_bls.wasm',
+            './out/poseidon_test_bls_final.zkey'
         )
         const out = poseidonT3(inputs)
         t.is(publicSignals[0], out.toString())

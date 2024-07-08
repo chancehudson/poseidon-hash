@@ -6,3 +6,6 @@ t/
 out/
 
 calc_round_numbers.py
+*.sage
+*.sage.py
+h.js

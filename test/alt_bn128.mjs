@@ -1,7 +1,13 @@
 import { buildPoseidon } from 'circomlibjs'
 import { poseidonT3 } from '../src/alt_bn128/t3.mjs'
 import crypto from 'crypto'
-import test from 'ava'
+import test, { registerCompletionHandler } from 'ava'
+import * as snarkjs from 'snarkjs'
+
+// Needed because snarkjs causes the process to hang
+registerCompletionHandler(() => {
+	process.exit()
+});
 
 test('vs circomlibjs', async t => {
   // test random inputs against the circomlibjs implementation
@@ -38,4 +44,26 @@ test('vs circomlibjs', async t => {
     const avg = sum / times.length
     console.log(`Average ${avg} ms per alt_bn128 hash`)
   }
+})
+
+test('circom impl', async t => {
+    const count = 100
+    for (let x = 0; x < count; x++) {
+        // if (x % 10 === 0 && x > 0) console.log(x)
+        const inputCount = 2
+        const inputs = []
+        for (let y = 0; y < inputCount; y++) {
+            inputs.push(
+                '0x' +
+                crypto.randomBytes(Math.floor(1 + 10 * Math.random())).toString('hex')
+            )
+        }
+        const { publicSignals } = await snarkjs.groth16.fullProve(
+            { inputs },
+            './out/poseidon_test_bn_js/poseidon_test_bn.wasm',
+            './out/poseidon_test_bn_final.zkey'
+        )
+        const out = poseidonT3(inputs)
+        t.is(publicSignals[0], out.toString())
+    }
 })
