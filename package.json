@@ -1,0 +1,21 @@
+{
+  "name": "poseidon-hash",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "lint": "prettier ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "circomlibjs": "^0.1.7",
+    "prettier": "^3.3.2"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "semi": false,
+    "singleQuote": true
+  }
+}
