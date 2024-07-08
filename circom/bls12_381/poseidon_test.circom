@@ -1,5 +1,5 @@
 pragma circom 2.0.0;
 
-include "./poseidon.circom";
+include "./poseidon_bls12_381.circom";
 
-component main = Poseidon(2);
+component main = PoseidonBLS(2);

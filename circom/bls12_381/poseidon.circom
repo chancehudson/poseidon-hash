@@ -1,7 +1,5 @@
 pragma circom 2.0.0;
 
-include "./constants.circom";
-
 // r = current round number
 template linear_layer(T, C, r) {
     signal input state[T];
@@ -82,15 +80,20 @@ template partial_round(T, C, M, r) {
     }
 }
 
-template Poseidon(N) {
-    signal input inputs[N];
+// T = state width
+// C = constants
+// M = md matrix
+// N_ROUNDS_F = number of full rounds
+// N_ROUNDS_P = number of partial rounds
+template Poseidon(T, C, M, N_ROUNDS_F, N_ROUNDS_P) {
+    signal input init_state[T];
     signal output out;
     // This is 8 for all instances we care about over alt_bn128 and bls12_381
-    var N_ROUNDS_F = 8;
-    var T = N + 1;
-    var N_ROUNDS_P = POSEIDON_R_P(T);
-    var C[T * (N_ROUNDS_F + N_ROUNDS_P)] = POSEIDON_C(T);
-    var M[T][T] = POSEIDON_M(T);
+    // var N_ROUNDS_F = 8;
+    // var T = N + 1;
+    // var N_ROUNDS_P = POSEIDON_R_P(T);
+    // var C[T * (N_ROUNDS_F + N_ROUNDS_P)] = POSEIDON_C(T);
+    // var M[T][T] = POSEIDON_M(T);
 
     // Tracks the current round number
     var r = 0;
@@ -102,11 +105,7 @@ template Poseidon(N) {
         for (var y = 0; y < T; y++) {
             if (x == 0) {
                 // take from inputs
-                if (y == 0) {
-                    full_rounds1[x].state[y] <== 0;
-                } else {
-                    full_rounds1[x].state[y] <== inputs[y - 1];
-                }
+                full_rounds1[x].state[y] <== init_state[y];
             } else {
                 // use the previous full round
                 full_rounds1[x].state[y] <== full_rounds1[x - 1].out[y];

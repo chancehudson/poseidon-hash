@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 CURVE=bls12381
 OUTDIR=out
 
