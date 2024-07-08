@@ -7,7 +7,7 @@ OUTDIR=out
 
 mkdir $OUTDIR
 
-circom --r1cs --wasm ./circom/bls12_381/poseidon_test.circom -p $CURVE -o $OUTDIR
+circom --r1cs --wasm ./circom/poseidon_test.circom -p $CURVE -o $OUTDIR
 
 cd $OUTDIR
 
