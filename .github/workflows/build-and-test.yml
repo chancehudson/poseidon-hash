@@ -33,10 +33,14 @@ jobs:
             - name: Clone circom
               run: git clone https://github.com/iden3/circom.git o
             - name: Install circom
-              run: cd o && cargo install --path circom
+              run: |
+                cd o
+                cargo install --path circom
+                cd ..
+                rm -rf o
             - name: Install
               run: npm install
             - name: Build and poseidon zkey
-              run: sh scripts/build_poseidon.sh
+              run: npm run build_poseidon
             - name: Test
               run: npm test
