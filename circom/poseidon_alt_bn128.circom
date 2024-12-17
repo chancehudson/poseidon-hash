@@ -9,10 +9,12 @@ template PoseidonBN(N) {
     var T = N + 1;
     var N_ROUNDS_F = 8;
     var N_ROUNDS_P = POSEIDON_R_P(T);
-    var C[T * (N_ROUNDS_F + N_ROUNDS_P)] = POSEIDON_C(T);
+    var C[81] = POSEIDON_C(T);
     var M[T][T] = POSEIDON_M(T);
+    var P[T][T] = POSEIDON_P(T);
+    var S[285] = POSEIDON_S(T);
 
-    component p = Poseidon(T, C, M, N_ROUNDS_F, N_ROUNDS_P);
+    component p = Poseidon(T, C, M, N_ROUNDS_F, N_ROUNDS_P, P, S);
     p.init_state[0] <== 0;
     for (var x = 1; x < T; x++) {
         p.init_state[x] <== inputs[x - 1];
